@@ -1,0 +1,7 @@
+numpy
+soxr
+tqdm
+torch
+torchaudio
+transformers
+tensorflow
