@@ -48,11 +48,22 @@ audio-encoding-pipeline/
 └── requirements.txt
 ```
 
-## Important: `pretrained/` Must Be Copied From Your Server
+## Pretrained Dependencies
 
-This repository does **not** contain all local pretrained artifacts needed for `Musika` and `LAC`.
+This repository does **not** bundle all pretrained artifacts required by `Musika` and `LAC`.
 
-You said the `pretrained/` directory already exists on your server. Copy that folder into this repository root so the final layout becomes:
+To use the autoencoders, clone the following repositories into a local `pretrained/` folder:
+
+- [Git Musika!](https://github.com/marcoppasini/musika)
+- [LAC](https://github.com/hugofloresgarcia/lac)
+
+For `LAC`, download the pretrained codec weights provided by [VampNet](https://github.com/hugofloresgarcia/vampnet) and place them in:
+
+```text
+pretrained/vampnet/codec.pth
+```
+
+The expected local structure is:
 
 ```text
 audio-encoding-pipeline/
@@ -68,7 +79,7 @@ audio-encoding-pipeline/
 │       └── codec.pth
 ```
 
-`Encodec` does not require local checkpoint files in this repo because it is loaded from Hugging Face at runtime.
+`Encodec` does not require local checkpoint files in this repository because it is loaded from Hugging Face at runtime.
 
 ## Installation
 
