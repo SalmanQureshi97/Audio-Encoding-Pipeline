@@ -6,7 +6,6 @@ Standalone dataset-creation pipeline for generating encoded audio using:
 - `Encodec`
 - `LAC`
 
-The repo was extracted and adapted from the original `deepfake-detector` codebase so it can be used on arbitrary audio collections such as SONICS fake songs, while still remaining compatible with the original FMA-style workflow.
 
 ## What This Repo Does
 
@@ -60,7 +59,7 @@ To use the autoencoders, clone the following repositories into a local `pretrain
 For `LAC`, download the pretrained codec weights provided by [VampNet](https://github.com/hugofloresgarcia/vampnet) and place them in:
 
 ```text
-pretrained/vampnet/codec.pth
+pretrained/vampnet/
 ```
 
 The expected local structure is:
@@ -69,14 +68,8 @@ The expected local structure is:
 audio-encoding-pipeline/
 ├── pretrained/
 │   ├── musika/
-│   │   ├── checkpoints/
-│   │   │   ├── ae/
-│   │   │   └── techno/
 │   ├── lac/
-│   │   └── lac/
-│   │       └── model/...
 │   └── vampnet/
-│       └── codec.pth
 ```
 
 `Encodec` does not require local checkpoint files in this repository because it is loaded from Hugging Face at runtime.
@@ -101,16 +94,16 @@ cd audio-encoding-pipeline
 
 This matters because the scripts and local pretrained assets are resolved relative to the repository itself.
 
-## Example: Encode SONICS Fake Songs
+## Example: Encode a dataset
 
-If your SONICS fake songs live in `/path/to/SONICS/fake_songs`, you can generate encoded variants like this:
+If your dataset lives in `/path/to/dataaset/`, you can generate encoded variants like this:
 
 ### Encodec
 
 ```bash
 python scripts/create_dataset/encodec.py \
-  --db-path /path/to/SONICS/fake_songs \
-  --out-db /path/to/SONICS_fake_encoded \
+  --db-path /path/to/dataset/ \
+  --out-db /path/to/dataset/out \
   --gpu 0 \
   --max-duration 180
 ```
@@ -119,8 +112,8 @@ python scripts/create_dataset/encodec.py \
 
 ```bash
 python scripts/create_dataset/lac.py \
-  --db-path /path/to/SONICS/fake_songs \
-  --out-db /path/to/SONICS_fake_encoded \
+  --db-path /path/to/dataset \
+  --out-db /path/to/dataset/out \
   --gpu 0 \
   --max-duration 180
 ```
@@ -129,8 +122,8 @@ python scripts/create_dataset/lac.py \
 
 ```bash
 python scripts/create_dataset/musika.py \
-  --db-path /path/to/SONICS/fake_songs \
-  --out-db /path/to/SONICS_fake_encoded \
+  --db-path /path/to/dataset \
+  --out-db /path/to/dataset/out \
   --gpu 0 \
   --max-duration 180
 ```
@@ -138,7 +131,7 @@ python scripts/create_dataset/musika.py \
 This will create output folders such as:
 
 ```text
-/path/to/SONICS_fake_encoded/
+/path/to/dataset/out/
 ├── encodec3/
 ├── encodec6/
 ├── encodec24/
@@ -174,8 +167,6 @@ This adapted pipeline makes bitrate metadata optional:
 - If `--bitrate-path` is provided, output compression follows the stored bitrate metadata.
 - If it is omitted, the pipeline still works and saves files without requiring FMA-specific metadata.
 
-For SONICS fake encoding, you will usually omit `--bitrate-path`.
-
 ## Important Configuration Notes
 
 - `--max-duration`:
@@ -186,14 +177,3 @@ For SONICS fake encoding, you will usually omit `--bitrate-path`.
   - Default is `3` seconds.
 - `--extensions`:
   - By default: `.mp3,.wav,.flac,.ogg,.m4a,.aac`
-
-## Why This Repo Exists
-
-The original dataset-creation scripts were tightly coupled to the FMA layout:
-
-- hard-coded FMA paths
-- mandatory FMA bitrate metadata
-- MP3-only loading
-- fragile output-folder assumptions
-
-This repo keeps the encoder logic but makes the pipeline reusable across datasets, especially SONICS fake songs.
