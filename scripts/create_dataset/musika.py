@@ -28,7 +28,7 @@ def configure_tf_gpu(gpu):
 def main():
     args = parse_args()
     conf = config_from_args(args)
-    paths = discover_audio_paths(args.db_path, args.extensions)
+    paths = discover_audio_paths(args.db_path, args.extensions, args.max_files)
     print(f"Found {len(paths)} audio paths")
 
     configure_torch_gpu(args.gpu)

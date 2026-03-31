@@ -29,6 +29,12 @@ def build_common_parser(description):
         help="Maximum duration in seconds; use 0 to disable clipping",
     )
     parser.add_argument(
+        "--max-files",
+        type=int,
+        default=0,
+        help="Maximum number of files to process; use 0 to process all files",
+    )
+    parser.add_argument(
         "--extensions",
         type=str,
         default=DEFAULT_EXTENSIONS,
@@ -46,11 +52,14 @@ def normalize_extensions(extensions):
     return out
 
 
-def discover_audio_paths(db_path, extensions):
+def discover_audio_paths(db_path, extensions, max_files=0):
     paths = []
     for ext in normalize_extensions(extensions):
         paths.extend(db_path.rglob(f"*{ext}"))
-    return sorted(set(paths))
+    paths = sorted(set(paths))
+    if max_files and max_files > 0:
+        paths = paths[:max_files]
+    return paths
 
 
 def config_from_args(args):
