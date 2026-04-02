@@ -1,7 +1,29 @@
-numpy
-soxr
-tqdm
-torch
-torchaudio
-transformers
-tensorflow
+# Core dependencies
+numpy>=1.21.0,<2.0.0  # Compatible with Python 3.9+
+
+# PyTorch ecosystem
+torch==2.2.0
+torchaudio==2.2.0
+transformers==4.38.0
+
+# TensorFlow ecosystem
+tensorflow==2.15.0
+tensorflow-io==0.36.0
+
+# Audio processing
+soxr  # For audio resampling
+sox  # For audio transformations (adversarial augmentations)
+soundfile  # For torchaudio backend fallback
+
+# Utilities
+tqdm  # Progress bars
+
+# Optional dependencies (uncomment if needed)
+descript-audiotools @ git+https://github.com/descriptinc/lyrebird-audiotools.git@0.7.2
+einops  # For tensor operations
+git+https://github.com/descriptinc/descript-audio-codec  # For DAC/LAC models
+
+# Note: ffmpeg/ffprobe must be installed separately via system package manager:
+# - macOS: brew install ffmpeg
+# - Ubuntu/Debian: sudo apt-get install ffmpeg
+# - Windows: Download from https://ffmpeg.org/download.html
