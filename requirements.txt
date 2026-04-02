@@ -35,4 +35,4 @@ matplotlib==3.4.3
 scipy
 tensorboard==2.10.0
 pydub==0.25.1
-huggingface-hub==0.10.1
+huggingface-hub
