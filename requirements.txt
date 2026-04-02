@@ -19,9 +19,8 @@ soundfile  # For torchaudio backend fallback
 tqdm  # Progress bars
 
 # Optional dependencies (uncomment if needed)
-descript-audiotools @ git+https://github.com/descriptinc/lyrebird-audiotools.git@0.7.2
+descript-audiotools
 einops  # For tensor operations
-git+https://github.com/descriptinc/descript-audio-codec  # For DAC/LAC models
 
 # Note: ffmpeg/ffprobe must be installed separately via system package manager:
 # - macOS: brew install ffmpeg
