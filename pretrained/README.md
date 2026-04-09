@@ -32,3 +32,4 @@ These assets are required by:
 - `scripts/create_dataset/lac.py`
 
 `Encodec` does not require local assets in this directory because it is loaded from Hugging Face at runtime.
+`GriffinMel` does not require local assets in this directory.

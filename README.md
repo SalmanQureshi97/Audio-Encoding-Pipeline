@@ -5,6 +5,7 @@ Standalone dataset-creation pipeline for generating encoded audio using:
 - `Musika`
 - `Encodec`
 - `LAC`
+- `GriffinMel`
 
 
 ## What This Repo Does
@@ -14,6 +15,7 @@ It takes a directory of audio files and produces encoded variants under an outpu
 - `encodec3`, `encodec6`, `encodec24`
 - `lac2`, `lac7`, `lac14`
 - `musika`
+- `griffin256`, `griffin512`
 
 The pipeline:
 
@@ -34,6 +36,7 @@ audio-encoding-pipeline/
 │   ├── ae.py
 │   ├── dac.py
 │   ├── encodec.py
+│   ├── griffinmel.py
 │   ├── musika.py
 │   └── pipeline.py
 ├── pretrained/
@@ -42,6 +45,7 @@ audio-encoding-pipeline/
 │   └── create_dataset/
 │       ├── _shared.py
 │       ├── encodec.py
+│       ├── grifmel.py
 │       ├── lac.py
 │       └── musika.py
 └── requirements.txt
@@ -73,6 +77,7 @@ audio-encoding-pipeline/
 ```
 
 `Encodec` does not require local checkpoint files in this repository because it is loaded from Hugging Face at runtime.
+`GriffinMel` does not require local checkpoint files either.
 
 ## Installation
 
@@ -128,6 +133,16 @@ python scripts/create_dataset/musika.py \
   --max-duration 180
 ```
 
+### GriffinMel
+
+```bash
+python scripts/create_dataset/grifmel.py \
+  --db-path /path/to/dataset \
+  --out-db /path/to/dataset/out \
+  --gpu 0 \
+  --max-duration 180
+```
+
 This will create output folders such as:
 
 ```text
@@ -135,6 +150,8 @@ This will create output folders such as:
 ├── encodec3/
 ├── encodec6/
 ├── encodec24/
+├── griffin256/
+├── griffin512/
 ├── lac2/
 ├── lac7/
 ├── lac14/
@@ -156,7 +173,7 @@ python scripts/create_dataset/encodec.py \
   --max-duration 40
 ```
 
-Use the same pattern for `lac.py` and `musika.py`.
+Use the same pattern for `lac.py`, `musika.py`, and `grifmel.py`.
 
 ## Notes on Bitrate Metadata
 
@@ -166,6 +183,10 @@ This adapted pipeline makes bitrate metadata optional:
 
 - If `--bitrate-path` is provided, output compression follows the stored bitrate metadata.
 - If it is omitted, the pipeline still works and saves files without requiring FMA-specific metadata.
+
+## Notes on GriffinMel
+
+`GriffinMel` is a lightweight reconstruction baseline and does not depend on anything inside `pretrained/`.
 
 ## Important Configuration Notes
 
