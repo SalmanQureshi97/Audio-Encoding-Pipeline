@@ -58,13 +58,14 @@ class Pipeline:
         }
 
         suffix = Path(fname).suffix.lower()
+    
         if suffix == ".mp3":
-            kwargs["backend"] = "sox"
-
+            kwargs["backend"] = "ffmpeg"
+    
         if self.bitrates is not None and fname in self.bitrates:
-            kwargs["backend"] = "sox"
+            kwargs["backend"] = "ffmpeg"
             kwargs["compression"] = min(int(self.bitrates[fname]), 320)
-
+    
         return kwargs
 
     def run_loop(self, models, model_names, multi_codec=None, has_cpu_preprocess=False):
