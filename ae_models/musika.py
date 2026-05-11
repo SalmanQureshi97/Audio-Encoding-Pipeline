@@ -26,7 +26,15 @@ class Musika_ae(AE):
     def __init__(self):
         super().__init__("Musika")
 
-        args = parse_args()
+        # Upstream Musika's parse_args() reads sys.argv directly. Shield it
+        # from our wrapper-script CLI flags (--db-path, --out-db, ...) by
+        # temporarily replacing sys.argv so Musika sees only its own defaults.
+        _saved_argv = sys.argv
+        sys.argv = [_saved_argv[0]]
+        try:
+            args = parse_args()
+        finally:
+            sys.argv = _saved_argv
         self.args = args
 
         args.load_path = str(CHECKPOINT)
